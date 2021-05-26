@@ -1,9 +1,14 @@
 import React from "react";
+
 export default class AdminView extends React.Component{
     constructor(props){
         super(props);
        
     }
+    handleEdit=(key,e)=>{
+        
+    }
+
     render(){
         const body = this.props.persons.map(
             form=>(
@@ -22,7 +27,7 @@ export default class AdminView extends React.Component{
                     <td>{form.Photo}</td>
                     <td>{form.plusTwo_Certificate}</td>
                     <td>{form.UG_or_PG_Certificate}</td>
-                    <td><button>Edit</button></td>
+                    <td><button onClick={handleEdit}>Edit</button></td>
                     <td><button>Delete</button></td>
                 </tr>)
         )
