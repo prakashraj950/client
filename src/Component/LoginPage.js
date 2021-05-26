@@ -1,6 +1,7 @@
 import React from "react";
-import axios from "axios"
-
+import axios from "axios";
+import View from "./ViewPage";
+import AdminView from "./admin/AdminView"
 export default class LoginPage extends React.Component {
  
   constructor() {
@@ -11,7 +12,8 @@ export default class LoginPage extends React.Component {
       Password: "",
       EmailErr: "",
       passwordErr: "",
-      data:""
+      data:"",
+      persons:"",
     };
   }
  
@@ -23,6 +25,7 @@ export default class LoginPage extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { Email, Password } = this.state;
+    // email validation.
     if (Email === "") {
       this.setState({ EmailErr: "Email id is required." });
     } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(Email)) {
@@ -31,7 +34,7 @@ export default class LoginPage extends React.Component {
       this.setState({ EmailErr: "" });
     }
 
-    //password
+    //password Validation
     if (Password === "") {
       this.setState({ passwordErr: "password is required" });
     } else if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/.test(Password)) {
@@ -43,10 +46,21 @@ export default class LoginPage extends React.Component {
       
     axios.post('http://localhost:5000/login',{Email:this.state.Email, Password:this.state.Password})
     .then(res=>{
+    if(!res.data.id==="2"){
+       
+       console.log(res.data)
       this.setState({data :res.data})
-      console.log(res.data)
-      const { step } = this.state;
-      this.setState({step: 3});
+      this.setState({step: 2});
+    }
+      else {
+        axios.get('http://localhost:5000/login').then(res=>{
+          const persons = res.data;
+          console.log(persons)
+          this.setState({persons})
+          this.setState({step: 3})
+          
+        });
+      }
     
     })
   }
@@ -54,8 +68,10 @@ export default class LoginPage extends React.Component {
   render() {
     var step = this.state.step;
     const { data } = this.state
-
-    return (
+    const { persons } = this.state
+    switch(step){
+    case 1:
+      return (
       <div>
         <form>
           Email:
@@ -86,5 +102,15 @@ export default class LoginPage extends React.Component {
         </form>
       </div>
     );
+      case 2:
+        return <View data={data} />
+  
+      case 3:
+        return <AdminView persons={persons} />
+      default:
+        return true
+    
+      }
+  
   }
 }
