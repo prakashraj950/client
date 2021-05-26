@@ -7,7 +7,7 @@ export default class StepFour extends React.Component {
 
   continue = (e) => {
     e.preventDefault();
-    this.props.submit();
+    this.props.Submit();
   };
 
   back = (e) => {

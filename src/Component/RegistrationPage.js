@@ -1,11 +1,12 @@
 import React from "react";
-import StepOne from "./StepOne";
-import StepTwo from "./StepTwo";
-import StepFour from "./StepFour";
-import StepThree from "./StepThree";
+import StepOne from "./RegistrationSteps/StepOne";
+import StepTwo from "./RegistrationSteps/StepTwo";
+import StepFour from "./RegistrationSteps/StepFour";
+import StepThree from "./RegistrationSteps/StepThree";
 import FormData from "../Data/FormData";
 import axios from "axios";
-export default class MainPage extends React.Component {
+export default class RegistrationPage extends React.Component {
+
   constructor() {
     super();
     this.state = {
@@ -13,6 +14,7 @@ export default class MainPage extends React.Component {
       formdata: new FormData()
     };
   }
+
   // Proceed to next step
   nextStep = () => {
     const { step } = this.state;
@@ -28,11 +30,10 @@ export default class MainPage extends React.Component {
       step: step - 1
     });
   };
+
   Submit = () => {
     axios.post('http://localhost:5000/form-data-set',this.state.formdata);
   };
-
-
 
   // Handle fields change
   handleChange = (input) => (e) => {

@@ -1,12 +1,53 @@
-import LoginForm from "./Component/LoginForm";
-//import MainPage from "./Component/MainPage";
 import "./styles.css";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { 
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from 'react-router-dom';
+
+import LoginPage from "./Component/LoginPage";
+import RegistrationPage from "./Component/RegistrationPage";
+import HomePage from "./Component/HomePage";
 
 export default function App() {
   return (
     <div className="App">
-      
-      <LoginForm />
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/register">Register</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <Switch>
+        <Route path="/register">
+          <RegistrationPage />
+        </Route>
+        <Route path="/login">
+          <LoginPage />
+        </Route>
+        <Route path="/">
+          <HomePage />
+        </Route>
+      </Switch>
+    </Router>
     </div>
   );
 }

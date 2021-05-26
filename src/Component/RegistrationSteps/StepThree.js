@@ -1,5 +1,5 @@
 import React from "react";
-import { Validate } from "../Data/FormData";
+import { Validate } from "../../Data/FormData";
 function removeItemOnce(arr, value) {
   var index = arr.indexOf(value);
   if (index > -1) {
