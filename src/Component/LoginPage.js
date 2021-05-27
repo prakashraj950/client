@@ -46,20 +46,20 @@ export default class LoginPage extends React.Component {
       
     axios.post('http://localhost:5000/login',{Email:this.state.Email, Password:this.state.Password})
     .then(res=>{
-    if(!res.data.id==="2"){
+      console.log(res.data[0].role);
+    if((res.data[0].role=="admin")){
        
-       console.log(res.data)
-      this.setState({data :res.data})
-      this.setState({step: 2});
+      axios.get('http://localhost:5000/login').then(res=>{
+        const persons = res.data;
+        this.setState({persons})
+        this.setState({step: 3})
+        
+      });
     }
-      else {
-        axios.get('http://localhost:5000/login').then(res=>{
-          const persons = res.data;
-          console.log(persons)
-          this.setState({persons})
-          this.setState({step: 3})
-          
-        });
+    else {
+        console.log(res.data)
+        this.setState({data :res.data})
+       this.setState({step: 2});
       }
     
     })

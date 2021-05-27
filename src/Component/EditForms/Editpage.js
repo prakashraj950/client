@@ -1,11 +1,11 @@
 import React from "react";
-import StepOne from "./EditForms/StepOne";
-import StepTwo from "./EditForms/StepTwo";
-import StepFour from "./EditForms/StepFour";
-import StepThree from "./EditForms/StepThree";
-import FormData from "../Data/FormData";
+import StepOne from "./StepOne";
+import StepTwo from "./StepTwo";
+import StepFour from "./StepFour";
+import StepThree from "./StepThree";
+import FormData from "./FormData";
 import axios from "axios";
-export default class RegistrationPage extends React.Component {
+export default class EditPage extends React.Component {
 
   constructor() {
     super();
@@ -32,7 +32,9 @@ export default class RegistrationPage extends React.Component {
   };
 
   Submit = () => {
-    axios.put('http://localhost:5000/form-data-set',this.state.formdata);
+   const id = this.props.id
+   console.log(id)
+    axios.put(`http://localhost:5000/update/${id}`,this.state.formdata);
   };
 
   // Handle fields change

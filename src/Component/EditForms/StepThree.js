@@ -1,5 +1,4 @@
 import React from "react";
-import { Validate } from "../../Data/FormData";
 function removeItemOnce(arr, value) {
   var index = arr.indexOf(value);
   if (index > -1) {
@@ -12,23 +11,17 @@ export default class StepThree extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      languages: this.props.values.languages,
-      errors:""
+      languages: this.props.values.languages
    };
-    this.validate = new Validate(this.props.values);
+    
     
     
   }
 
   continue =(e) => {
     e.preventDefault();
-    this.validate.StepThreeValidation();
-    let errors = this.validate.formErrors;
-    if (Object.keys(errors).length === 0) {
-      this.props.nextStep();
-    } else {
-      this.setState({ errors: Object.values(errors).join("\n") });
-    }
+   this.props.nextStep();
+    
   }
 
   back = (e) => {

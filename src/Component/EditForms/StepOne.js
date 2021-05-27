@@ -1,5 +1,5 @@
 import React from "react";
-import { Validate } from "../../Data/FormData";
+import { Validate } from "./FormData";
 export default class Firststep extends React.Component {
   constructor(props) {
     super(props);

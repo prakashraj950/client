@@ -1,5 +1,5 @@
 import React from "react";
-
+import FormData from "../../Data/FormData";
 export default class StepFour extends React.Component {
   state = {
     file: null

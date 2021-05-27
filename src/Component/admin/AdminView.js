@@ -1,15 +1,22 @@
 import React from "react";
-
+import EditPage from "../EditForms/Editpage"
 export default class AdminView extends React.Component{
     constructor(props){
         super(props);
+        this.state={
+        step: 1,
+        key: "", 
+    }
        
     }
-    handleEdit=(key,e)=>{
-        
+    handleEdit=(key)=>(e)=>{
+        e.preventDefault()
+       this.setState({key})
+        this.setState({step:2})
     }
 
     render(){
+        const {step} = this.state;
         const body = this.props.persons.map(
             form=>(
                 <tr>
@@ -25,12 +32,12 @@ export default class AdminView extends React.Component{
                     <td>{form.languages}</td>
                     <td>{form.Department}</td>
                     <td>{form.Photo}</td>
-                    <td>{form.plusTwo_Certificate}</td>
-                    <td>{form.UG_or_PG_Certificate}</td>
-                    <td><button onClick={handleEdit}>Edit</button></td>
+                    <td><button onClick={this.handleEdit(form.id)}>Edit</button></td>
                     <td><button>Delete</button></td>
                 </tr>)
-        )
+        ) 
+        switch (step) {
+           case 1:
                 return(
                     <table>
                         <tr>
@@ -46,15 +53,15 @@ export default class AdminView extends React.Component{
                             <th>Language</th>
                             <th>Department</th>
                             <th>Photo</th>
-                            <th>PlusTwo Certificate</th>
-                            <th>UG OR PG Certificate</th>
                             <th>Action</th>
                          </tr>
                          {body}
                     </table>
                 )
     
-    
+                    case 2:
+                        const {key} = this.state
+                        return <EditPage id={key}/> 
     
     }
 
@@ -62,6 +69,6 @@ export default class AdminView extends React.Component{
 
 
 
-
+    }
 
 }
