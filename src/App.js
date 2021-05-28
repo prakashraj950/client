@@ -1,5 +1,6 @@
 import "./styles.css";
 import React from 'react';
+import StepFour from "./Component/RegistrationSteps/StepFour";
 import ReactDOM from 'react-dom';
 import { 
     BrowserRouter as Router,
@@ -8,7 +9,7 @@ import {
     Link
   } from 'react-router-dom';
 
-import LoginPage from "./Component/LoginPage";
+//import LoginPage from "./Component/LoginPage";
 import RegistrationPage from "./Component/RegistrationPage";
 import HomePage from "./Component/HomePage";
 
@@ -41,7 +42,7 @@ export default function App() {
           <RegistrationPage />
         </Route>
         <Route path="/login">
-          <LoginPage />
+          <StepFour />
         </Route>
         <Route path="/">
           <HomePage />
