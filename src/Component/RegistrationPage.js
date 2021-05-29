@@ -13,7 +13,7 @@ export default class RegistrationPage extends React.Component {
       step: 1,
       formdata: new UserData(),
       selectedFile: null,
-      data: new FormData
+      data: new FormData()
     };
   }
 
@@ -50,11 +50,11 @@ export default class RegistrationPage extends React.Component {
 
 
   Submit = async () => {
-    const Email = this.state.formdata.firstname
+    const Email = this.state.formdata.Email
    await axios.post('http://localhost:5000/form-data-set',this.state.formdata);
     console.log(Email)
     await axios.post('http://localhost:5000/upload', this.state.data,{
-      params:Email})
+      params:{Email}})
     };
 
   // Handle fields change
@@ -65,8 +65,7 @@ export default class RegistrationPage extends React.Component {
   };
 
   render() {
-    var step = this.state.step;
-
+    const { step }= this.state;
     const values = this.state.formdata;
 
     switch (step) {

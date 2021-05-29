@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 export default class StepFour extends Component {
   constructor(props) {
     super(props);
-      
+     this.state={
+      photo:""
+     } 
    
   }
 
@@ -18,7 +19,11 @@ export default class StepFour extends Component {
     this.props.prevStep();
   };
   
+onChangeHandler=(e)=>{
+  this.props.onChangeHandler(e);
+  this.setState({photo:window.URL.createObjectURL(e.target.files[0])})
 
+}
 
 
   
@@ -26,12 +31,15 @@ export default class StepFour extends Component {
    
 
   render() {
-    const{ onChangeHandler} = this.props
+    
+    const photo = this.state.photo
+    console.log(photo)
+    const {onChangeHandler} = this.props
     return (
       <div>
           <form>
-          
-          Photo <input name="photo" type="file"  onChange={onChangeHandler}/>
+          <img src={photo} alt="photo" width="200" height="200"  />
+          Photo <input name="photo" type="file"  onChange={this.onChangeHandler}/>
 
           
           12th Certificate<input name="plus2_certificate" type="file"  onChange={onChangeHandler}/>
