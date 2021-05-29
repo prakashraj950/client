@@ -11,7 +11,9 @@ export default class RegistrationPage extends React.Component {
     super();
     this.state = {
       step: 1,
-      formdata: new FormData()
+      formdata: new FormData(),
+      selectedFile: null,
+      data: new Formdata
     };
   }
 
@@ -31,8 +33,28 @@ export default class RegistrationPage extends React.Component {
     });
   };
 
-  Submit = () => {
-    axios.post('http://localhost:5000/form-data-set',this.state.formdata);
+  onChangeHandler=event=>{
+    var files = event.target.files
+       this.setState({
+       selectedFile: files,
+       
+    })
+  }
+  onClickHandler = () => {
+    const {data} = this.state
+    for(var x = 0; x<this.state.selectedFile.length; x++) {
+      data.append('file', this.state.selectedFile[x]);
+    };
+  }
+  
+
+
+
+  Submit = async () => {
+    const name = this.state.formdata.firstname
+   await axios.post('http://localhost:5000/form-data-set',this.state.formdata),
+    console.log(name)
+    await axios.post(`http://localhost:5000/upload`, this.state.data);
   };
 
   // Handle fields change
@@ -79,7 +101,8 @@ export default class RegistrationPage extends React.Component {
           <StepFour
             Submit={this.Submit}
             prevStep={this.prevStep}
-            handleChange={this.handleChange}
+            onChangeHandler={this.onChangeHandler}
+            onClickHandler={this.onClickHandler}
             values={values}
           />
         );
