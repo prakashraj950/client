@@ -1,22 +1,51 @@
 import React from "react";
-import EditPage from "../EditForms/Editpage"
+import EditPage from "../EditForms/Editpage";
+import jsPDF from 'jspdf';
 export default class AdminView extends React.Component{
     constructor(props){
         super(props);
         this.state={
         step: 1,
         key: "", 
+
     }
-       
-    }
+   
+}
     handleEdit=(key)=>(e)=>{
         e.preventDefault()
        this.setState({key})
         this.setState({step:2})
     }
 
+    convert=()=> {
+        
+        var doc = new jsPDF("p","px","letter");
+        var col = ["firstname","lastname","Email","Gender","age","contact","country","District","Languages","Department"];
+        
+        var rows = [];
+    
+ 
+       
+ 
+   this.props.persons.map(elm=>{
+     var temp = [elm.firstname,elm.lastname,elm.Email,elm.Gender,elm.age,elm.Contact,elm.Country,elm.District,elm.languages,elm.Department];
+    rows.push(temp)
+
+    })
+ 
+    doc.autoTable(col, rows );
+ 
+    doc.save('Data.pdf');
+      
+    }
+
     render(){
         const {step} = this.state;
+        
+
+
+
+
         const body = this.props.persons.map(
             form=>(
                 <tr>
@@ -39,6 +68,7 @@ export default class AdminView extends React.Component{
         switch (step) {
            case 1:
                 return(
+                    <div>
                     <table>
                         <tr>
                             <th>Firstname</th>
@@ -57,6 +87,7 @@ export default class AdminView extends React.Component{
                          </tr>
                          {body}
                     </table>
+                    <button onClick={this.convert}>Export pdf</button></div>
                 )
     
                     case 2:

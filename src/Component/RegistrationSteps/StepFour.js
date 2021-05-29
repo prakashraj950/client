@@ -26,29 +26,26 @@ export default class StepFour extends Component {
    
 
   render() {
-    const{ onChangeHandler,onClickHandler} = this.props
+    const{ onChangeHandler} = this.props
     return (
       <div>
-	      <form>
-          <div>
-          Photo <input type="file"  onChange={this.onChangeHandler}/>
-          <button type="button"  onClick={this.onClickHandler}>Upload</button></div><br/>
+          <form>
           
-          <div>
-          12th Certificate<input type="file"  onChange={this.onChangeHandler}/>
-          <button type="button"  onClick={this.onClickHandler}>Upload</button></div><br/>
+          Photo <input name="photo" type="file"  onChange={onChangeHandler}/>
+
           
-         <div>
-         UG or PG Certificate <input type="file"  onChange={this.onChangeHandler}/>
-          
-          <button type="button"  onClick={this.onClickHandler}>Upload</button>
-          </div><br/><br/>  
-              
-              
+          12th Certificate<input name="plus2_certificate" type="file"  onChange={onChangeHandler}/>
+
+         
+         UG or PG Certificate <input name="ug_or_pg_certificate" type="file"  onChange={onChangeHandler}/>
+
+          <br/><br/>
+
+
               <button onClick={this.back}>BACK</button>
           <button onClick={this.continue}>submit</button>
       </form>
-	     
+
       </div>
     );
   }

@@ -3,7 +3,7 @@ import StepOne from "./RegistrationSteps/StepOne";
 import StepTwo from "./RegistrationSteps/StepTwo";
 import StepFour from "./RegistrationSteps/StepFour";
 import StepThree from "./RegistrationSteps/StepThree";
-import FormData from "../Data/FormData";
+import UserData from "../Data/FormData";
 import axios from "axios";
 export default class RegistrationPage extends React.Component {
 
@@ -11,9 +11,9 @@ export default class RegistrationPage extends React.Component {
     super();
     this.state = {
       step: 1,
-      formdata: new FormData(),
+      formdata: new UserData(),
       selectedFile: null,
-      data: new Formdata
+      data: new FormData
     };
   }
 
@@ -34,28 +34,28 @@ export default class RegistrationPage extends React.Component {
   };
 
   onChangeHandler=event=>{
-    var files = event.target.files
-       this.setState({
-       selectedFile: files,
-       
-    })
+    console.log("hello");
+    const files = event.target.files;
+    const name = event.target.name;
+    const { data } = this.state;
+    data.append(name, files[0]);
+    this.setState({
+      data
+    });
   }
-  onClickHandler = () => {
-    const {data} = this.state
-    for(var x = 0; x<this.state.selectedFile.length; x++) {
-      data.append('file', this.state.selectedFile[x]);
-    };
-  }
+
+
   
 
 
 
   Submit = async () => {
-    const name = this.state.formdata.firstname
-   await axios.post('http://localhost:5000/form-data-set',this.state.formdata),
-    console.log(name)
-    await axios.post(`http://localhost:5000/upload`, this.state.data);
-  };
+    const Email = this.state.formdata.firstname
+   await axios.post('http://localhost:5000/form-data-set',this.state.formdata);
+    console.log(Email)
+    await axios.post('http://localhost:5000/upload', this.state.data,{
+      params:Email})
+    };
 
   // Handle fields change
   handleChange = (input) => (e) => {
@@ -102,7 +102,6 @@ export default class RegistrationPage extends React.Component {
             Submit={this.Submit}
             prevStep={this.prevStep}
             onChangeHandler={this.onChangeHandler}
-            onClickHandler={this.onClickHandler}
             values={values}
           />
         );
