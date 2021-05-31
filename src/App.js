@@ -12,7 +12,22 @@ import LoginPage from "./Component/LoginPage";
 import RegistrationPage from "./Component/RegistrationPage";
 import HomePage from "./Component/HomePage";
 
-export default function App() {
+export  class App extends React.Component {
+  
+  state ={
+    Email : "",
+    password: "",
+    role:""
+
+    }
+  setAppState=(Email,password,role)=>{
+  
+ this.setState({Email})
+ this.setState({password})
+ this.setState({role})
+  }
+
+ render(){
   return (
     <div className="App">
     <Router>
@@ -41,7 +56,7 @@ export default function App() {
           <RegistrationPage />
         </Route>
         <Route path="/login">
-          <LoginPage />
+          <LoginPage setAppState={this.setAppState} />
         </Route>
         <Route path="/">
           <HomePage />
@@ -50,4 +65,5 @@ export default function App() {
     </Router>
     </div>
   );
+}
 }

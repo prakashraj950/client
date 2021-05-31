@@ -8,12 +8,12 @@ export default class LoginPage extends React.Component {
     super();
     this.state = {
       step: 1,
-      Email: "",
-      Password: "",
+     Email:"",
+     Password:"",
       EmailErr: "",
       passwordErr: "",
-      data:"",
-      persons:"",
+      message:""
+      
     };
   }
  
@@ -46,21 +46,17 @@ export default class LoginPage extends React.Component {
       
     axios.post('http://localhost:5000/login',{Email:this.state.Email, Password:this.state.Password})
     .then(res=>{
-      console.log(res.data[0].role);
-    if((res.data[0].role=="admin")){
-       
-      axios.get('http://localhost:5000/login').then(res=>{
-        const persons = res.data;
-        this.setState({persons})
-        this.setState({step: 3})
-        
-      });
-    }
-    else {
-        console.log(res.data)
-        this.setState({data :res.data})
-       this.setState({step: 2});
+      if (res.data.status==="success"){
+        this.props.setAppState(this.state.Email,this.state.Password,res.data.role);
+        if (res.data.role==="admin"){
+          this.setState({step:3});
+        } else {
+          this.setState({step:2});
+        }
+      }else{ this.setState({message:"ivalid user id or password"})
+
       }
+        
     
     })
   }
@@ -95,18 +91,20 @@ export default class LoginPage extends React.Component {
           />
           <div style={{ color: "red", fontSize: "14px" }}>
             {this.state.passwordErr}
-          </div>
+          </div><br/>
+          <h1>{this.state.message}</h1>
           <br />
           <br />
           <button onClick={this.handleSubmit}>login</button>
+        
         </form>
       </div>
     );
       case 2:
-        return <View data={data} />
+        return (<Redirect to={"view"} />)
   
       case 3:
-        return <AdminView persons={persons} />
+        return (<Redirect to={"adminview"} />)
       default:
         return true
     
