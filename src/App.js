@@ -1,6 +1,5 @@
 import "./styles.css";
 import React from 'react';
-//import StepFour from "./Component/RegistrationSteps/StepFour";
 import ReactDOM from 'react-dom';
 import { 
     BrowserRouter as Router,
