@@ -39,13 +39,13 @@ onChangeHandler=(e)=>{
       <div>
           <form>
           <img src={photo} alt="photo" width="200" height="200"  />
-          Photo <input name="photo" type="file"  onChange={this.onChangeHandler}/>
+          Photo <input name="Photo" type="file"  onChange={this.onChangeHandler}/>
 
           
-          12th Certificate<input name="plus2_certificate" type="file"  onChange={onChangeHandler}/>
+          12th Certificate<input name="plusTwo_Certificate" type="file"  onChange={onChangeHandler}/>
 
          
-         UG or PG Certificate <input name="ug_or_pg_certificate" type="file"  onChange={onChangeHandler}/>
+         UG or PG Certificate <input name="UG_or_PG_Certificate" type="file"  onChange={onChangeHandler}/>
 
           <br/><br/>
 
