@@ -4,6 +4,7 @@ import StepTwo from "./RegistrationSteps/StepTwo";
 import StepFour from "./RegistrationSteps/StepFour";
 import StepThree from "./RegistrationSteps/StepThree";
 import UserData from "../Data/FormData";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 export default class RegistrationPage extends React.Component {
 
@@ -55,6 +56,7 @@ export default class RegistrationPage extends React.Component {
     console.log(Email)
     await axios.post('http://localhost:5000/upload', this.state.data,{
       params:{Email}})
+      this.setState({step:5})
     };
 
   // Handle fields change
@@ -104,6 +106,8 @@ export default class RegistrationPage extends React.Component {
             values={values}
           />
         );
+        case 5:
+          return(<Redirect to={"login"} />)
 
       default:
         return true;

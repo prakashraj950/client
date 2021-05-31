@@ -1,6 +1,7 @@
 import React from "react";
 import EditPage from "../EditForms/Editpage";
 import jsPDF from 'jspdf';
+import * as autoTable from 'jspdf-autotable';
 export default class AdminView extends React.Component{
     constructor(props){
         super(props);
@@ -60,7 +61,7 @@ export default class AdminView extends React.Component{
                     <td>{form.District}</td>
                     <td>{form.languages}</td>
                     <td>{form.Department}</td>
-                    <td>{form.Photo}</td>
+                    <td><img src={ `http://localhost:5000/${form.id}/${form.Photo}` } width="150" height="150"/></td>
                     <td><button onClick={this.handleEdit(form.id)}>Edit</button></td>
                     <td><button>Delete</button></td>
                 </tr>)

@@ -19,9 +19,9 @@ export default class View extends React.Component{
                     <td>{form.District}</td>
                     <td>{form.languages}</td>
                     <td>{form.Department}</td>
-                    <td>{form.Photo}</td>
-                    <td>{form.plusTwo_Certificate}</td>
-                    <td>{form.UG_or_PG_Certificate}</td>
+                    <td><img src={`http://localhost:5000/${form.id}/${form.Photo}`} width="150" height="150"/></td>
+                    <td><img src={`http://localhost:5000/${form.id}/${form.plusTwo_Certificate}`} width="150" height="150"/></td>
+                    <td><img src={`http://localhost:5000/${form.id}/${form.UG_or_PG_Certificate}`} width="150" height="150"/></td>
                 </tr>)
         )
                 return(
