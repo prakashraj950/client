@@ -51,8 +51,10 @@ export default class RegistrationPage extends React.Component {
 
 
   Submit = async () => {
-    const Email = this.state.formdata.Email
-   await axios.post('http://localhost:5000/form-data-set',this.state.formdata);
+    const Email = this.state.formdata.Email;
+    const captcha = this.props.captcha
+    axios.post('http://localhost:5000/form-data-set',{data:this.state.formdata,captcha:captcha})
+     .then((res)=>{alert(res.data.msg)})
     console.log(Email)
     await axios.post('http://localhost:5000/upload', this.state.data,{
       params:{Email}})

@@ -1,13 +1,25 @@
-import React from "react"
+import React from "react";
+import axios from "axios";
 export default class View extends React.Component{
     constructor(props){
         super(props);
-       
-    }
+      this.state={ form : ""}
+    
+    
+      axios.post('http://localhost:5000/data',this.props.value)
+      .then(res=>{
+       this.setState({form:res.data})
+    
+    
+    
+    })
+
+} 
+
+
     render(){
-        const body = this.props.data.map(
-            form=>(
-                <tr>
+         const {form } = this.state
+         const body = (     <tr>
                     <td>{form.firstname}</td>
                     <td>{form.lastname}</td>
                     <td>{form.Email}</td>
@@ -23,9 +35,10 @@ export default class View extends React.Component{
                     <td><img src={`http://localhost:5000/${form.id}/${form.plusTwo_Certificate}`} width="150" height="150"/></td>
                     <td><img src={`http://localhost:5000/${form.id}/${form.UG_or_PG_Certificate}`} width="150" height="150"/></td>
                 </tr>)
-        )
+        
                 return(
-                    <table>
+                   
+                   <table>
                         <tr>
                             <th>Firstname</th>
                             <th>Lastname</th>
@@ -55,5 +68,5 @@ export default class View extends React.Component{
 
 
 
-
 }
+    

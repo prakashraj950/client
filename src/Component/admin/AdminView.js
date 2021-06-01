@@ -2,21 +2,30 @@ import React from "react";
 import EditPage from "../EditForms/Editpage";
 import jsPDF from 'jspdf';
 import * as autoTable from 'jspdf-autotable';
+import axios from "axios";
+import { Redirect } from "react-router";
 export default class AdminView extends React.Component{
     constructor(props){
         super(props);
         this.state={
         step: 1,
         key: "", 
+        form:[]
 
     }
-   
+    axios.post('http://localhost:5000/list',this.props.value)
+    .then(res=>{
+     this.setState({form:res.data})})
+    
 }
-    handleEdit=(key)=>(e)=>{
-        e.preventDefault()
-       this.setState({key})
-        this.setState({step:2})
-    }
+handleEdit=(form)=>(e)=>{
+    e.preventDefault()
+    this.props.selectuser({
+      Email: form.Email,
+      Password: form.Password
+    });
+    this.setState({step:2})
+}
 
     convert=()=> {
         
@@ -28,7 +37,7 @@ export default class AdminView extends React.Component{
  
        
  
-   this.props.persons.map(elm=>{
+   this.state.form.map(elm=>{
      var temp = [elm.firstname,elm.lastname,elm.Email,elm.Gender,elm.age,elm.Contact,elm.Country,elm.District,elm.languages,elm.Department];
     rows.push(temp)
 
@@ -47,7 +56,7 @@ export default class AdminView extends React.Component{
 
 
 
-        const body = this.props.persons.map(
+        const body = this.state.form.map(
             form=>(
                 <tr>
                     <td>{form.firstname}</td>
@@ -62,7 +71,7 @@ export default class AdminView extends React.Component{
                     <td>{form.languages}</td>
                     <td>{form.Department}</td>
                     <td><img src={ `http://localhost:5000/${form.id}/${form.Photo}` } width="150" height="150"/></td>
-                    <td><button onClick={this.handleEdit(form.id)}>Edit</button></td>
+                    <td><button onClick={this.handleEdit(form)}>Edit</button></td>
                     <td><button>Delete</button></td>
                 </tr>)
         ) 
@@ -92,8 +101,7 @@ export default class AdminView extends React.Component{
                 )
     
                     case 2:
-                        const {key} = this.state
-                        return <EditPage id={key}/> 
+                       return <Redirect to="edit" ></Redirect> 
     
     }
 

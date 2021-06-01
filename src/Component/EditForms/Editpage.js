@@ -7,12 +7,15 @@ import FormData from "./FormData";
 import axios from "axios";
 export default class EditPage extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       step: 1,
       formdata: new FormData()
     };
+    axios.post('http://localhost:5000/data',this.props.selecteduser)
+      .then(res=>{
+       this.setState({formdata:res.data}) })
   }
 
   // Proceed to next step
@@ -32,9 +35,7 @@ export default class EditPage extends React.Component {
   };
 
   Submit = () => {
-   const id = this.props.id
-   console.log(id)
-    axios.put(`http://localhost:5000/update/${id}`,this.state.formdata);
+    axios.put('http://localhost:5000/update',{form: this.state.formdata, pass: this.props.pass});
   };
 
   // Handle fields change

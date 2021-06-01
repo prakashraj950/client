@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-
+import ReCAPTCHA from 'react-google-recaptcha'
+import RegistrationPage from '../RegistrationPage';
 export default class StepFour extends Component {
   constructor(props) {
     super(props);
      this.state={
-      photo:""
+      photo:"",
+      recaptchaResponse:""
      } 
    
   }
@@ -25,6 +27,12 @@ onChangeHandler=(e)=>{
 
 }
 
+handleCaptchaResponseChange=(response)=>{
+  this.setState({
+    recaptchaResponse: response
+  });
+  <RegistrationPage captcha={this.state.recaptchaResponse} />
+}
 
   
     
@@ -47,8 +55,10 @@ onChangeHandler=(e)=>{
          
          UG or PG Certificate <input name="UG_or_PG_Certificate" type="file"  onChange={onChangeHandler}/>
 
-          <br/><br/>
-
+          <br/><br/><div><ReCAPTCHA
+        ref={(el) => { this.recaptcha = el; }}
+        sitekey="6LcJmgQbAAAAAPkRfYGkjQvuuwzb7UnmYhBqivOe"
+        onChange={this.handleCaptchaResponseChange}/></div>
 
               <button onClick={this.back}>BACK</button>
           <button onClick={this.continue}>submit</button>

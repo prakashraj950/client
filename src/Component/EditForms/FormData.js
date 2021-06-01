@@ -1,5 +1,6 @@
 export default class FormData {
   constructor() {
+    
     this.firstname = "";
     this.lastname = "";
     this.Email = "";

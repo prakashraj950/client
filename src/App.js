@@ -11,23 +11,41 @@ import {
 import LoginPage from "./Component/LoginPage";
 import RegistrationPage from "./Component/RegistrationPage";
 import HomePage from "./Component/HomePage";
+import AdminView from "./Component/admin/AdminView";
+import ViewPage from "./Component/ViewPage";
+import EditPage from "./Component/EditForms/Editpage";
 
-export  class App extends React.Component {
+export default  class App extends React.Component {
+  constructor(){
+  super();
   
-  state ={
+    setTimeout(()=>{
+      this.setState({Email:"",Password:"",role:"",selecteduser:""})
+      },1000)
+      
+  this.state ={
     Email : "",
-    password: "",
-    role:""
+    Password: "",
+    role:"",
+    selecteduser: ""
 
+  }
     }
-  setAppState=(Email,password,role)=>{
+  setAppState=(Email,Password,role)=>{
   
  this.setState({Email})
- this.setState({password})
+ this.setState({Password})
  this.setState({role})
+  }
+  selectuser=(selecteduser)=>{
+    console.log(selecteduser)
+    this.setState({selecteduser})
   }
 
  render(){
+   const {Email,Password,role,selecteduser} = this.state
+  const value = {Email,Password,role}
+  
   return (
     <div className="App">
     <Router>
@@ -58,6 +76,17 @@ export  class App extends React.Component {
         <Route path="/login">
           <LoginPage setAppState={this.setAppState} />
         </Route>
+        <Route path="/view">
+          <ViewPage value={value} />
+        </Route>
+        <Route path="/adminView">
+          <AdminView value={value}
+          selectuser={this.selectuser}/>
+          </Route>
+          <Route path="/edit">
+          <EditPage selecteduser={selecteduser}
+          />
+          </Route>
         <Route path="/">
           <HomePage />
         </Route>

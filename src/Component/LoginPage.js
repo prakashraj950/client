@@ -1,7 +1,8 @@
 import React from "react";
 import axios from "axios";
 import View from "./ViewPage";
-import AdminView from "./admin/AdminView"
+import AdminView from "./admin/AdminView";
+import { Redirect } from "react-router-dom";
 export default class LoginPage extends React.Component {
  
   constructor() {
@@ -53,7 +54,7 @@ export default class LoginPage extends React.Component {
         } else {
           this.setState({step:2});
         }
-      }else{ this.setState({message:"ivalid user id or password"})
+      }else{ this.setState({message:"invalid user id or password"})
 
       }
         
@@ -63,8 +64,7 @@ export default class LoginPage extends React.Component {
 
   render() {
     var step = this.state.step;
-    const { data } = this.state
-    const { persons } = this.state
+
     switch(step){
     case 1:
       return (
