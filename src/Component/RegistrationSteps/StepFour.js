@@ -5,8 +5,8 @@ export default class StepFour extends Component {
   constructor(props) {
     super(props);
      this.state={
-      photo:"",
-      recaptchaResponse:""
+      photo:""
+      
      } 
    
   }
@@ -27,12 +27,7 @@ onChangeHandler=(e)=>{
 
 }
 
-handleCaptchaResponseChange=(response)=>{
-  this.setState({
-    recaptchaResponse: response
-  });
-  <RegistrationPage captcha={this.state.recaptchaResponse} />
-}
+
 
   
     
@@ -42,7 +37,7 @@ handleCaptchaResponseChange=(response)=>{
     
     const photo = this.state.photo
     console.log(photo)
-    const {onChangeHandler} = this.props
+    const {onChangeHandler,handleCaptchaResponseChange} = this.props
     return (
       <div>
           <form>
@@ -58,7 +53,7 @@ handleCaptchaResponseChange=(response)=>{
           <br/><br/><div><ReCAPTCHA
         ref={(el) => { this.recaptcha = el; }}
         sitekey="6LcJmgQbAAAAAPkRfYGkjQvuuwzb7UnmYhBqivOe"
-        onChange={this.handleCaptchaResponseChange}/></div>
+        onChange={handleCaptchaResponseChange}/></div>
 
               <button onClick={this.back}>BACK</button>
           <button onClick={this.continue}>submit</button>

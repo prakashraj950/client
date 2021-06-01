@@ -14,7 +14,8 @@ export default class RegistrationPage extends React.Component {
       step: 1,
       formdata: new UserData(),
       selectedFile: null,
-      data: new FormData()
+      data: new FormData(),
+      recaptchaResponse:""
     };
   }
 
@@ -45,14 +46,18 @@ export default class RegistrationPage extends React.Component {
     });
   }
 
+  handleCaptchaResponseChange=(response)=>{
+    this.setState({
+      recaptchaResponse: response
+    });
+    
+  }
 
   
 
-
-
   Submit = async () => {
     const Email = this.state.formdata.Email;
-    const captcha = this.props.captcha
+    const captcha = this.state.recaptchaResponse
     axios.post('http://localhost:5000/form-data-set',{data:this.state.formdata,captcha:captcha})
      .then((res)=>{alert(res.data.msg)})
     console.log(Email)
@@ -106,6 +111,7 @@ export default class RegistrationPage extends React.Component {
             prevStep={this.prevStep}
             onChangeHandler={this.onChangeHandler}
             values={values}
+            handleCaptchaResponseChang={this.handleCaptchaResponseChange}
           />
         );
         case 5:
