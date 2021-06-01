@@ -36,7 +36,6 @@ export default class RegistrationPage extends React.Component {
   };
 
   onChangeHandler=event=>{
-    console.log("hello");
     const files = event.target.files;
     const name = event.target.name;
     const { data } = this.state;
@@ -60,13 +59,17 @@ export default class RegistrationPage extends React.Component {
     const Email = this.state.formdata.Email;
     const captcha = this.state.recaptchaResponse
     const res = await axios.post('http://localhost:5000/form-data-set',{data:this.state.formdata,captcha:captcha})
+    console.log(res.data)
     if(!res.data.success){
           alert(res.data.msg)
     } else {
+      console.log("hello")
       await axios.post('http://localhost:5000/upload', this.state.data,{
       params:{Email}})
       this.setState({step:5})
+      console.log("ah")
     }
+
     console.log(Email)
     
     };
