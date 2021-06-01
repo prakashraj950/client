@@ -47,6 +47,7 @@ export default class RegistrationPage extends React.Component {
   }
 
   handleCaptchaResponseChange=(response)=>{
+    console.log(response)
     this.setState({
       recaptchaResponse: response
     });
@@ -58,12 +59,16 @@ export default class RegistrationPage extends React.Component {
   Submit = async () => {
     const Email = this.state.formdata.Email;
     const captcha = this.state.recaptchaResponse
-    axios.post('http://localhost:5000/form-data-set',{data:this.state.formdata,captcha:captcha})
-     .then((res)=>{alert(res.data.msg)})
-    console.log(Email)
-    await axios.post('http://localhost:5000/upload', this.state.data,{
+    const res = await axios.post('http://localhost:5000/form-data-set',{data:this.state.formdata,captcha:captcha})
+    if(!res.data.success){
+          alert(res.data.msg)
+    } else {
+      await axios.post('http://localhost:5000/upload', this.state.data,{
       params:{Email}})
       this.setState({step:5})
+    }
+    console.log(Email)
+    
     };
 
   // Handle fields change
@@ -111,7 +116,7 @@ export default class RegistrationPage extends React.Component {
             prevStep={this.prevStep}
             onChangeHandler={this.onChangeHandler}
             values={values}
-            handleCaptchaResponseChang={this.handleCaptchaResponseChange}
+            handleCaptchaResponseChange={this.handleCaptchaResponseChange}
           />
         );
         case 5:

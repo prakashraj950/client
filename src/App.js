@@ -21,8 +21,8 @@ export default  class App extends React.Component {
   
     setTimeout(()=>{
       this.setState({Email:"",Password:"",role:"",selecteduser:""})
-      },1000)
-      
+      },1000*300)
+
   this.state ={
     Email : "",
     Password: "",
