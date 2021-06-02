@@ -16,9 +16,17 @@ export default class RegistrationPage extends React.Component {
       selectedFile: null,
       data: new FormData(),
       recaptchaResponse:"",
-      err:""
+      err:"",
+      expired:""
     };
   }
+  componentDidMount() {
+ 
+    setTimeout(
+    () => this.setState({expired: true}),
+    1000*60*2
+    );
+     }
 
   // Proceed to next step
   nextStep = () => {
@@ -89,6 +97,9 @@ export default class RegistrationPage extends React.Component {
   };
 
   render() {
+    if (this.state.expired) {
+      return <Redirect to="/"/>
+    }
     const { step }= this.state;
     const values = this.state.formdata;
     const {err} = this.state;

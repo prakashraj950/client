@@ -5,7 +5,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,Redirect
   } from 'react-router-dom';
 
 import LoginPage from "./Component/LoginPage";
@@ -18,11 +18,6 @@ import EditPage from "./Component/EditForms/Editpage";
 export default  class App extends React.Component {
   constructor(){
   super();
-  
-    setTimeout(()=>{
-      this.setState({Email:"",Password:"",role:"",selecteduser:""})
-      },1000*300)
-
   this.state ={
     Email : "",
     Password: "",
@@ -32,10 +27,12 @@ export default  class App extends React.Component {
   }
     }
   setAppState=(Email,Password,role)=>{
-  
  this.setState({Email})
  this.setState({Password})
  this.setState({role})
+ onUserInactive(()=>{
+  this.setState({Email:"",Password:"",role:"",selecteduser:""})
+  }, 1000*60*5)
   }
   selectuser=(selecteduser)=>{
     console.log(selecteduser)
@@ -68,7 +65,10 @@ export default  class App extends React.Component {
           </ul>
         </nav>
       </div>
-
+      {(this.state.Email === "")
+  ? <Redirect to="/login" />
+  : null
+}
       <Switch>
         <Route path="/register">
           <RegistrationPage />
@@ -95,4 +95,19 @@ export default  class App extends React.Component {
     </div>
   );
 }
+}
+function onUserInactive (action, inactive_time) {
+  var time;
+
+  function resetTimer() {
+    clearTimeout(time);
+    time = setTimeout(action, inactive_time);
+  }
+  
+  window.addEventListener('load', resetTimer, true);
+  var events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click', 'keydown', 'load'];
+  events.forEach(function(name) {
+      document.addEventListener(name, resetTimer, true);
+    }
+  );
 }
