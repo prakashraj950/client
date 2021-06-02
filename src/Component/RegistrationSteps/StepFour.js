@@ -39,6 +39,7 @@ onChangeHandler=(e)=>{
     const {onChangeHandler,handleCaptchaResponseChange} = this.props
     return (
       <div>
+         <div>{this.props.err}</div>
           <form>
           <img src={photo} alt="photo" width="200" height="200"  />
           Photo <input name="Photo" type="file"  onChange={this.onChangeHandler}/>
@@ -48,7 +49,7 @@ onChangeHandler=(e)=>{
 
          
          UG or PG Certificate <input name="UG_or_PG_Certificate" type="file"  onChange={onChangeHandler}/>
-
+         
           <br/><br/><div><ReCAPTCHA
         sitekey="6LcJmgQbAAAAAPkRfYGkjQvuuwzb7UnmYhBqivOe"
         onChange={handleCaptchaResponseChange}/></div>

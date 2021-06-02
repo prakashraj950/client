@@ -15,7 +15,8 @@ export default class RegistrationPage extends React.Component {
       formdata: new UserData(),
       selectedFile: null,
       data: new FormData(),
-      recaptchaResponse:""
+      recaptchaResponse:"",
+      err:""
     };
   }
 
@@ -56,8 +57,9 @@ export default class RegistrationPage extends React.Component {
   
 
   Submit = async () => {
+   try{
     const Email = this.state.formdata.Email;
-    const captcha = this.state.recaptchaResponse
+    const captcha = this.state.recaptchaResponse;
     const res = await axios.post('http://localhost:5000/form-data-set',{data:this.state.formdata,captcha:captcha})
     console.log(res.data)
     if(!res.data.success){
@@ -72,7 +74,12 @@ export default class RegistrationPage extends React.Component {
 
     console.log(Email)
     
-    };
+    }
+   catch(err){
+    return this.setState({err:"can't register the user"})
+  }
+}
+
 
   // Handle fields change
   handleChange = (input) => (e) => {
@@ -84,7 +91,7 @@ export default class RegistrationPage extends React.Component {
   render() {
     const { step }= this.state;
     const values = this.state.formdata;
-
+    const {err} = this.state;
     switch (step) {
       case 1:
         return (
@@ -120,6 +127,7 @@ export default class RegistrationPage extends React.Component {
             onChangeHandler={this.onChangeHandler}
             values={values}
             handleCaptchaResponseChange={this.handleCaptchaResponseChange}
+            err ={err}
           />
         );
         case 5:
