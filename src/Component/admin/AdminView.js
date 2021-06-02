@@ -10,7 +10,8 @@ export default class AdminView extends React.Component{
         this.state={
         step: 1,
         key: "", 
-        form:[]
+        form:[],
+        data: new FormData
 
     }
     axios.post('http://localhost:5000/list',this.props.value)
@@ -47,7 +48,21 @@ handleEdit=(form)=>(e)=>{
  
     doc.save('Data.pdf');
       
+    };
+    onChangehandle=(e)=>{
+        const files = e.target.files;
+    const name = e.target.name;
+    const { data } = this.state;
+    data.append(name, files[0]);
+    this.setState({
+      data
+    });
     }
+
+   import=()=>{
+    axios.post('http://localhost:5000/registerbycsv', this.state.data)
+   } 
+
 
     render(){
         const {step} = this.state;
@@ -97,7 +112,8 @@ handleEdit=(form)=>(e)=>{
                          </tr>
                          {body}
                     </table>
-                    <button onClick={this.convert}>Export pdf</button></div>
+                    <button onClick={this.convert}>Export pdf</button>
+                   <div><input name="csv" type="text/csv" onChange={this.onChangehandle}></input><button onClick={this.import}>Import</button></div> </div>
                 )
     
                     case 2:

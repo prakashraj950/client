@@ -4,7 +4,7 @@ export default class StepFour extends Component {
   constructor(props) {
     super(props);
      this.state={
-      photo:""
+      photo: this.props.photo
       
      } 
    
@@ -20,22 +20,7 @@ export default class StepFour extends Component {
     this.props.prevStep();
   };
   
-onChangeHandler=(e)=>{
-  this.onFilevalidation=(e)=>{
-    const image = e.target.files;
-    if (typeof(image)!== "undefined"){
-      const size = parseFloat(image[0].size /(1024*1024)).toFixed(2);
-      if(size >2){
-        alert('please select image size less than 2MB')
-      }else{ alert('success')
-    }
-    }this.props.onChangeHandler(e)
-    this.setState({photo:window.URL.createObjectURL(e.target.files[0])})
-  }
-  
-  
 
-}
 
 
 
@@ -53,7 +38,7 @@ onChangeHandler=(e)=>{
          <div>{this.props.err}</div>
           <form>
           <img src={photo} alt="photo" width="200" height="200"  />
-          Photo <input name="Photo" type="file" accept="image/png, image/gif, image/jpeg" onChange={this.onChangeHandler}/>
+          Photo <input name="Photo" type="file" accept="image/png, image/gif, image/jpeg" onChange={onChangeHandler}/>
 
           
           12th Certificate<input name="plusTwo_Certificate" type="file" accept="application/pdf" onChange={onChangeHandler}/>

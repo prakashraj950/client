@@ -17,14 +17,15 @@ export default class RegistrationPage extends React.Component {
       data: new FormData(),
       recaptchaResponse:"",
       err:"",
-      expired:""
+      expired:"",
+      photo:""
     };
   }
   componentDidMount() {
  
     setTimeout(
     () => this.setState({expired: true}),
-    1000*60*2
+    1000*60*3
     );
      }
 
@@ -44,14 +45,31 @@ export default class RegistrationPage extends React.Component {
     });
   };
 
-  onChangeHandler=event=>{
-    const files = event.target.files;
-    const name = event.target.name;
+  onChangeHandler=(e)=>{
+    const file = e.target.files[0];
+    if (typeof(file)!== "undefined"){
+      const size = parseFloat(file.size /(1024*1024)).toFixed(2);
+      const name = file.name;
+const lastDot = name.lastIndexOf('.');
+const ext = name.substring(lastDot + 1).toLowerCase();
+
+if (["jpg", "png"].includes(ext) && size > 1) {
+  alert('please select image files less than 2MB')
+}
+else if (["pdf"].includes(ext) && size > 3) {
+  alert('please select pdf files less than 3MB')
+}
+else{ 
+    this.setState({photo:window.URL.createObjectURL(e.target.files[0])})
+    const files = e.target.files;
+    const name = e.target.name;
     const { data } = this.state;
     data.append(name, files[0]);
     this.setState({
       data
     });
+  }
+}
   }
 
   handleCaptchaResponseChange=(response)=>{
@@ -65,28 +83,33 @@ export default class RegistrationPage extends React.Component {
   
 
   Submit = async () => {
-   try{
+  
     const Email = this.state.formdata.Email;
     const captcha = this.state.recaptchaResponse;
-    const res = await axios.post('http://localhost:5000/form-data-set',{data:this.state.formdata,captcha:captcha})
+    let res
+    try{
+    res = await axios.post('http://localhost:5000/form-data-set',{data:this.state.formdata,captcha:captcha})
     console.log(res.data)
+    } catch(err){
+      return this.setState({err:"can't register the user"})}
     if(!res.data.success){
           alert(res.data.msg)
     } else {
       console.log("hello")
+      try{
       await axios.post('http://localhost:5000/upload', this.state.data,{
       params:{Email}})
+      }catch(err){console.log(err)}
+      
       this.setState({step:5})
-      console.log("ah")
     }
 
-    console.log(Email)
+    
     
     }
-   catch(err){
-    return this.setState({err:"can't register the user"})
-  }
-}
+  
+  
+
 
 
   // Handle fields change
@@ -100,9 +123,9 @@ export default class RegistrationPage extends React.Component {
     if (this.state.expired) {
       return <Redirect to="/"/>
     }
-    const { step }= this.state;
+    const { step,err,photo }= this.state;
     const values = this.state.formdata;
-    const {err} = this.state;
+    
     switch (step) {
       case 1:
         return (
@@ -139,6 +162,7 @@ export default class RegistrationPage extends React.Component {
             values={values}
             handleCaptchaResponseChange={this.handleCaptchaResponseChange}
             err ={err}
+            photo={photo}
           />
         );
         case 5:
