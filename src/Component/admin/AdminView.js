@@ -1,9 +1,17 @@
-import React from "react";
+import React,{ Component } from "react";
 import EditPage from "../EditForms/Editpage";
 import jsPDF from 'jspdf';
 import * as autoTable from 'jspdf-autotable';
 import axios from "axios";
+import { Modal, Button } from "react-bootstrap";
 import { Redirect } from "react-router";
+//
+import ReactExport from "react-export-excel";
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+
 export default class AdminView extends React.Component{
     constructor(props){
         super(props);
@@ -11,12 +19,11 @@ export default class AdminView extends React.Component{
         step: 1,
         key: "", 
         form:[],
-        data: new FormData
+        data: new FormData(),
+        mail:{}
 
     }
-    axios.post('http://localhost:5000/list',this.props.value)
-    .then(res=>{
-     this.setState({form:res.data})})
+    
     
 }
 handleEdit=(form)=>(e)=>{
@@ -61,19 +68,46 @@ handleEdit=(form)=>(e)=>{
 
    import=()=>{
     axios.post('http://localhost:5000/registerbycsv', this.state.data)
+    .then((value)=>{this.fetchData()});
    } 
+  
+  
+   fetchData=()=>{
+    axios.post('http://localhost:5000/list',this.props.value)
+    .then(res=>{
+     this.setState({form:res.data})})
+   }
 
+   componentDidMount() {
+    this.fetchData();
+  }
+  onModalhandle=(key)=>(e)=>{
+      const {mail} = this.state
+    mail[key] = e.target.value;
+    this.setState({mail})
 
+  }
+  initialiseMail = (Email) => () => {
+      const mail = this.state.mail; 
+      mail.to = Email; 
+      this.setState({ mail });
+    }
+  mailsubmit=()=>{
+      axios.post('http://localhost:5000/send',this.state.mail)
+      .then((res)=>{
+          alert(res.data)})
+      }
+      onclick=()=>{
+         this.setState({step:3})
+
+      }
+  
     render(){
-        const {step} = this.state;
-        
-
-
-
+        const {step} = this.state; 
 
         const body = this.state.form.map(
             form=>(
-                <tr>
+                <tr key={form.Email}>
                     <td>{form.firstname}</td>
                     <td>{form.lastname}</td>
                     <td>{form.Email}</td>
@@ -88,6 +122,10 @@ handleEdit=(form)=>(e)=>{
                     <td><img src={ `http://localhost:5000/${form.id}/${form.Photo}` } width="150" height="150"/></td>
                     <td><button onClick={this.handleEdit(form)}>Edit</button></td>
                     <td><button>Delete</button></td>
+                    <td><MailModal onChangehandle={this.onModalhandle}
+                    mail={this.state.mail}
+                    initialiseMail={this.initialiseMail(form.Email)}
+                    mailsubmit={this.mailsubmit}/></td>
                 </tr>)
         ) 
         switch (step) {
@@ -108,16 +146,22 @@ handleEdit=(form)=>(e)=>{
                             <th>Language</th>
                             <th>Department</th>
                             <th>Photo</th>
-                            <th>Action</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                            <th>Mail</th>
                          </tr>
                          {body}
                     </table>
                     <button onClick={this.convert}>Export pdf</button>
-                   <div><input name="csv" type="text/csv" onChange={this.onChangehandle}></input><button onClick={this.import}>Import</button></div> </div>
+                   <div><input name="csv" type="file" accept="text/csv" onChange={this.onChangehandle}></input><button onClick={this.import}>Import CSV</button></div> 
+                   <button onClick={this.onclick}>export Excel</button>
+                   </div>
                 )
     
                     case 2:
                        return <Redirect to="edit" ></Redirect> 
+                    case 3:
+                        return <Download  formset={this.state.form}/>
     
     }
 
@@ -128,3 +172,60 @@ handleEdit=(form)=>(e)=>{
     }
 
 }
+class MailModal extends React.Component {
+    
+    state = {
+        isOpen: false
+      };
+    
+      
+        openModal = () => {this.props.initialiseMail();this.setState({ isOpen: true });}
+       closeModal = () => this.setState({ isOpen: false });
+    
+    render() {
+        const {mail,mailsubmit }= this.props
+        return (
+            <>
+              
+                <Button variant="primary" onClick={this.openModal}>
+                  Mail
+                </Button>
+              <Modal  size="lg"
+              aria-labelledby="contained-modal-title-vcenter"
+              centered
+              show={this.state.isOpen} onHide={this.closeModal}>
+                
+                <Modal.Header closeButton>
+                  <Modal.Title  id="contained-modal-title-vcenter">Mail</Modal.Title>
+                </Modal.Header>
+                <Modal.Body><form>To:<input name="to" value={mail.to} onChange={this.props.onChangehandle("to")}></input><br/><br/>
+                                Subject:<input name="subject" value={mail.subject} onChange={this.props.onChangehandle("subject")}></input><br/><br/>
+                                Message:<textarea name="message" value={mail.message} onChange={this.props.onChangehandle("message")}></textarea>
+                </form></Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={this.closeModal}>
+                    Close
+                  </Button>
+                  <Button variant="primary" onClick={mailsubmit}>Send</Button>
+                </Modal.Footer>
+              </Modal>
+            </>
+          );
+        }
+      }
+
+      class Download extends React.Component {
+        render() {
+            return (
+                <ExcelFile element={<button>Download Data</button>}>
+                    <ExcelSheet data={this.props.formset} >
+                        <ExcelColumn label="firstname" />
+                        <ExcelColumn label="lastname" />
+                        <ExcelColumn label="Email" />
+                        <ExcelColumn label="Gender"/>
+                    </ExcelSheet>
+                
+                </ExcelFile>
+            );
+        }
+    }
