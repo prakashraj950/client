@@ -5,9 +5,8 @@ import * as autoTable from 'jspdf-autotable';
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import { Redirect } from "react-router";
-//
-import ReactExport from "react-export-excel";
 
+import ReactExport from "react-export-excel";
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
@@ -97,10 +96,7 @@ handleEdit=(form)=>(e)=>{
       .then((res)=>{
           alert(res.data)})
       }
-      onclick=()=>{
-         this.setState({step:3})
-
-      }
+      
   
     render(){
         const {step} = this.state; 
@@ -154,14 +150,14 @@ handleEdit=(form)=>(e)=>{
                     </table>
                     <button onClick={this.convert}>Export pdf</button>
                    <div><input name="csv" type="file" accept="text/csv" onChange={this.onChangehandle}></input><button onClick={this.import}>Import CSV</button></div> 
-                   <button onClick={this.onclick}>export Excel</button>
+                   <Download formset={this.state.form} />
                    </div>
                 )
     
                     case 2:
                        return <Redirect to="edit" ></Redirect> 
-                    case 3:
-                        return <Download  formset={this.state.form}/>
+                   
+                        
     
     }
 
@@ -218,11 +214,11 @@ class MailModal extends React.Component {
         render() {
             return (
                 <ExcelFile element={<button>Download Data</button>}>
-                    <ExcelSheet data={this.props.formset} >
-                        <ExcelColumn label="firstname" />
-                        <ExcelColumn label="lastname" />
-                        <ExcelColumn label="Email" />
-                        <ExcelColumn label="Gender"/>
+                    <ExcelSheet data={this.props.formset} name="data" >
+                        <ExcelColumn label="firstname" value="firstname"/>
+                        <ExcelColumn label="lastname" value="lastname" />
+                        <ExcelColumn label="Email" value="Email"/>
+                        <ExcelColumn label="Gender" value="Gender"/>
                     </ExcelSheet>
                 
                 </ExcelFile>
